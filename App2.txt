@@ -1,0 +1,67 @@
+import {useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {Adduser,Modifuser,Suppuser} from './Projet-Redux/action'
+
+import {Link,Route,Routes} from 'react-router-dom'
+import About from './Routage_React/About'
+import Home from './Routage_React/Home'
+import Userr from './Routage_React/User'
+import Users from './Routage_React/Users'
+
+import User from './Projet-Redux/User'
+import Forms from './Projet-Redux/Form' 
+import HooksperApiFetch from './Preparation_cc/HooksperApiFetch'
+/* import HooksperAxios from './Preparation_cc/HooksperAxios' */
+
+const useToggel =()=>{
+  const [toogel,setToggel]=useState(false)
+  function chekToogle(){
+    setToggel(!toogel)
+  }
+  return [toogel,chekToogle]
+}
+
+
+
+
+export default function App() {
+  const dispatch = useDispatch()
+  const listeData = useSelector(state => state.listdata)
+  function ajout(user){dispatch(Adduser(user))}
+  function update(user){dispatch(Modifuser(user))}
+  function delet(id){dispatch(Suppuser(id))}
+  const [Toogel,chekToogle]=useToggel()
+  return (
+    <div className='container'>
+      <ul>
+        <Link className='ms-4' to="/" >Homme</Link>
+        <Link className='ms-4' to="/about" >About</Link>
+        <Link className='ms-4' to="/Users" >Users</Link>
+        <Link className='ms-4' to="/Userr" >User</Link>
+      </ul>
+      <br />
+      <Routes>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/about' element={<About/>}></Route>
+        <Route path='/Users' element={<Users/>}></Route>
+        <Route path='/Userr/:iduser' element={<Userr/>}></Route>
+      </Routes>
+
+      <br />
+      <br />
+      <button className='btn btn-primary' onClick={chekToogle}> Toogel</button>
+      {Toogel && <HooksperApiFetch />}
+      <br />
+      <br />
+    {/*   <HooksperAxios /> */}
+
+
+
+      <br />
+      {listeData.map((listeData,key)=> <User key={key} nom={listeData.nom} prenom={listeData.prenom} email={listeData.email}/>)}
+      <br />
+        <Forms ajouter={ajout} updat={update} delet={delet}/> 
+      
+    </div>
+  )
+}

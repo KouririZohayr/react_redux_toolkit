@@ -1,0 +1,37 @@
+import {useSelector , useDispatch} from 'react-redux'
+import {increment,decrement,loggedReducer,listeData} from './Compenent/action'
+import HooksPer from './hooksperso/HooksPer'
+import HookspersAxios from './hooksperso/HookspersAxios'
+import HooksPerCounter from './hooksperso/HooksPerCounter'
+
+
+function App() {
+
+ const listeDat = useSelector(state => state.listes)
+  const counter = useSelector(state =>state.Mycounter)
+  const islogged = useSelector(state => state.islogged)
+ console.log(listeDat)
+  const despatch=useDispatch()
+ 
+  return (
+    <div className="App">
+     <h1>counter : {counter}</h1>
+     <button type="button" onClick={()=>despatch(increment(10))} className="btn btn-primary">Increment</button>   
+     <button type="button" onClick={()=>despatch(decrement())} className="btn btn-primary ms-3" >Decrement</button>
+     <button type="button" onClick={()=>despatch(loggedReducer(true))} className="btn btn-primary ms-3" >Decrement</button>
+     <button type="button" onClick={()=>despatch(listeData())} className="btn btn-primary ms-3" >afficher info</button>
+     {islogged && <h1>Hi Zohayr</h1>}
+     <ul>
+      {listeDat.map((vel , index)=> <li >{vel.name}</li>)}
+    </ul> 
+    <br />
+    <HooksPer />
+    <br />
+    <HookspersAxios />
+    <br />
+    <HooksPerCounter />
+    </div>
+  );
+  }
+
+export default App;
